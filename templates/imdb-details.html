@@ -1,0 +1,46 @@
+<div>
+  <p><b>IMDb ID:</b> <span id="result-imdb-id">{{ result.imdb_id }}</span></p>
+  <p><b>Title:</b> <span id="result-title">{{ result.title }}</span></p>
+  <p>
+    <b>Duration:</b> <span id="result-duration">{{ result.duration }}</span>
+  </p>
+  <p>
+    <b>Release Year:</b>
+    <span id="result-release-year">{{ result.release_year }}</span>
+  </p>
+  <p>
+    <b>Directors:</b>
+    <span id="result-directors">
+      {% for director in result.directors %} {{ director }}{{ ", " if not
+      loop.last else "" }} {% endfor %}
+    </span>
+  </p>
+  <p>
+    <b>Stars:</b>
+    <span id="result-stars">
+      {% for star in result.stars %} {{ star }}{{ ", " if not loop.last else ""
+      }} {% endfor %}
+    </span>
+  </p>
+  <p>
+    <b>Writers:</b>
+    <span id="result-writers">
+      {% for writer in result.writers %} {{ writer }}{{ ", " if not loop.last
+      else "" }} {% endfor %}
+    </span>
+  </p>
+  <p>
+    <b>Tags:</b>
+    <span id="result-tags">
+      {% for tag in result.tags %} {{ tag }}{{ ", " if not loop.last else "" }}
+      {% endfor %}
+    </span>
+  </p>
+  <p>
+    <b>Synopsis:</b> <span id="result-synopsis">{{ result.synopsis }}</span>
+  </p>
+  <p>
+    <b>Age Rating:</b>
+    <span id="result-age-rating">{{ result.age_rating }}</span>
+  </p>
+</div>

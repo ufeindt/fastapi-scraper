@@ -5,11 +5,16 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "beautifulsoup4>=4.13.5",
     "fastapi[standard]>=0.116.2",
+    "requests>=2.32.5",
 ]
 
 [dependency-groups]
 dev = [
+    "mypy>=1.18.2",
     "pre-commit>=4.3.0",
     "ruff>=0.13.1",
+    "types-beautifulsoup4>=4.12.0.20250516",
+    "types-requests>=2.32.4.20250913",
 ]
