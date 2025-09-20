@@ -11,3 +11,7 @@ wheels/
 .env
 .envrc
 .python_version
+
+.vscode
+
+*/node_modules
