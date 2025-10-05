@@ -1,0 +1,19 @@
+{% if  result %}
+  <b>Scraping URL:</b> <a href="{{ url }}" id="scraping-url">{{ url }}</a>
+  {% for key, value in result.items() %}
+    <p>
+      <b>{{ key.replace("_", " ") | title }}:</b>
+      <span id="result-{{ key.replace("_","-") }}">
+        {% if value is string %}
+          {{ value }}
+        {% else %}
+          {{ value | join(", ") }}
+        {% endif %}
+      </span>
+    </p>
+  {% endfor %}
+{% endif %}
+
+{% if error %}
+  <span class="text-red-500">{{ error }}</span>
+{% endif %}

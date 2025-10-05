@@ -1,10 +1,17 @@
-from fastapi import FastAPI, Request
+from typing import Annotated, Union
+
+from fastapi import FastAPI, Header, Request
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from scrapers.imdb import scrape_imdb
+from scrapers import (
+    SearchType,
+    search_query,
+)
+from scrapers.exceptions import InvalidTypeException, NotFoundException
+from scrapers.search import SEARCH_HIERARCHY, SearchCategory
 
 app = FastAPI()
 
@@ -15,14 +22,67 @@ app.add_middleware(GZipMiddleware)
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
-    return templates.TemplateResponse("base.html", request=request)
-
-
-@app.get("/imdb/{imdb_id}", response_class=HTMLResponse)
-async def imdb_details(request: Request, imdb_id: str):
-    result = scrape_imdb(imdb_id)
     return templates.TemplateResponse(
         name="base.html",
         request=request,
-        context={"content_template": "imdb-details.html", "result": result},
+        context={
+            "search_categories": SEARCH_HIERARCHY.values(),
+        },
+    )
+
+
+@app.get("/{search_category}", response_class=HTMLResponse)
+async def search_category(
+    request: Request,
+    search_category: SearchCategory,
+    hx_request: Annotated[Union[str, None], Header()] = None,
+):
+    return templates.TemplateResponse(
+        name="search.html" if hx_request else "base.html",
+        request=request,
+        context={
+            "search_category": search_category,
+            "search_categories": SEARCH_HIERARCHY.values(),
+            "search_types": SEARCH_HIERARCHY.get(search_category, {})
+            .get("search_types")
+            .values(),
+        },
+    )
+
+
+@app.get("/{search_category}/{search_type}", response_class=HTMLResponse)
+async def search(
+    request: Request,
+    search_category: SearchCategory,
+    search_type: SearchType,
+    query: str | None = None,
+    hx_request: Annotated[Union[str, None], Header()] = None,
+):
+    template = "base.html"
+    search_type_dict = SEARCH_HIERARCHY.get(search_category, {}).get("search_types", {})
+
+    context = {
+        "search_type": search_type,
+        "search_types": search_type_dict.values(),
+        "search_type_title": search_type_dict.get(search_type, {}).get("title"),
+        "search_categories": SEARCH_HIERARCHY.values(),
+        "search_category": search_category,
+    }
+    if query:
+        if hx_request:
+            template = "result.html"
+        try:
+            context["url"] = request.url
+            context["result"] = search_query(
+                search_category, search_type, query
+            ).model_dump()
+        except (InvalidTypeException, NotFoundException, NotImplementedError) as e:
+            context["error"] = str(e)
+    elif hx_request:
+        template = "search.html"
+
+    return templates.TemplateResponse(
+        name=template,
+        request=request,
+        context=context,
     )

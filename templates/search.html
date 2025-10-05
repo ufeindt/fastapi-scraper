@@ -1,0 +1,52 @@
+<div>
+  <div>
+    {% for category in search_categories %}
+      {% if category.search_category.value == search_category %}
+        <b>{{ category.title }}</b>
+      {% else %}
+        <a
+          href="/{{ category.search_category.value }}"
+          hx-get="/{{ category.search_category.value }}"
+          hx-target="#search"
+          hx-replace-url="true"
+        >
+          {{ category.title }}
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% if search_types %}
+    {% for type_option in search_types %}
+      {% if type_option.search_type.value == search_type %}
+        <b>{{ type_option.title }}</b>
+      {% else %}
+        <a
+          href="/{{ search_category.value }}/{{ type_option.search_type.value }}"
+          hx-get="/{{ search_category.value }}/{{ type_option.search_type.value }}"
+          hx-target="#search"
+          hx-replace-url="true"
+        >
+          {{ type_option.title }}
+        </a>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+</div>
+
+{% if search_category and search_type %}
+  <form
+    hx-get="/{{ search_category.value }}/{{ search_type.value }}"
+    hx-target="#result"
+    hx-trigger="submit"
+    hx-replace-url="true"
+    method="get"
+  >
+    <input
+      type="text"
+      name="query"
+      placeholder="Search {{ search_type_title }}"
+      class="w-full"
+    />
+    <button type="submit">Search</button>
+  </form>
+{% endif %}

@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link href="{{url_for('static',path='/css/app.css')}}" rel="stylesheet" />
+    <title>Movie &amp; Book Scraper</title>
+    <link href="{{ url_for('static',path='/css/app.css') }}" rel="stylesheet" />
     <script
       type="text/javascript"
       src="{{ url_for('static', path='js/htmx.min.js') }}"
@@ -13,9 +13,9 @@
   </head>
   <body>
     <div class="p-6 mx-auto max-w-screen-lg">
-      <h1 class ="text-3xl font-bold mx-auto w-fit">
-        FastAPI/HTMX Movie &amp; Book Scraper
-      </h1>
-    <div id="content" class="p-4 w-full">{% include content_template %}</div>
+      <h1 class="text-3xl font-bold mx-auto w-fit">Movie &amp; Book Scraper</h1>
+      <div id="search" class="p-4 w-full">{% include 'search.html' %}</div>
+      <div id="result" class="p-4 w-full">{% include 'result.html' %}</div>
+    </div>
   </body>
 </html>

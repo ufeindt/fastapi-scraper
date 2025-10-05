@@ -11,7 +11,9 @@ wheels/
 .env
 .envrc
 .python_version
+.mypy_cache
+.ruff_cache
 
 .vscode
 
-*/node_modules
+node_modules
