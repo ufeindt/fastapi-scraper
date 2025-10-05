@@ -5,8 +5,8 @@
         <b>{{ category.title }}</b>
       {% else %}
         <a
-          href="/{{ category.search_category.value }}"
-          hx-get="/{{ category.search_category.value }}"
+          href="/{{ api_key }}/{{ category.search_category.value }}"
+          hx-get="/{{ api_key }}/{{ category.search_category.value }}"
           hx-target="#search"
           hx-replace-url="true"
         >
@@ -21,8 +21,8 @@
         <b>{{ type_option.title }}</b>
       {% else %}
         <a
-          href="/{{ search_category.value }}/{{ type_option.search_type.value }}"
-          hx-get="/{{ search_category.value }}/{{ type_option.search_type.value }}"
+          href="/{{ api_key }}/{{ search_category.value }}/{{ type_option.search_type.value }}"
+          hx-get="/{{ api_key }}/{{ search_category.value }}/{{ type_option.search_type.value }}"
           hx-target="#search"
           hx-replace-url="true"
         >
@@ -35,7 +35,7 @@
 
 {% if search_category and search_type %}
   <form
-    hx-get="/{{ search_category.value }}/{{ search_type.value }}"
+    hx-get="/{{ api_key }}/{{ search_category.value }}/{{ search_type.value }}"
     hx-target="#result"
     hx-trigger="submit"
     hx-replace-url="true"
