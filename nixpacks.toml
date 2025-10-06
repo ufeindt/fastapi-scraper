@@ -1,0 +1,15 @@
+[variables]
+NIXPACKS_METADATA = 'python'
+NIXPACKS_PYTHON_PACKAGE_MANAGER = 'uv'
+NIXPACKS_PYTHON_VERSION = '3.13'
+
+
+[phases.setup]
+nixPkgs = ['...', 'uv']
+
+[phases.install]
+dependsOn = ['setup']
+cmds = ['uv sync']
+
+[start]
+cmd = 'uv run fastapi run main.py --port 3000'
