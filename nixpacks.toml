@@ -1,2 +1,0 @@
-[start]
-cmd = "fastapi run main.py --port 3000"
