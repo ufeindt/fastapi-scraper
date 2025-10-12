@@ -4,13 +4,14 @@
     {% if value %}
       <p>
         <b>{{ key.replace("_", " ") | title }}:</b>
-        <span id="result-{{ key.replace("_","-") }}">
-          {% if value is string or value is number %}
-            {{ value }}
-          {% else %}
-            "{{ value | join('", "') }}"
-          {% endif %}
-        </span>
+        {% if value is string or value is number %}
+          <span class="result-{{ key.replace("_","-") }}"> {{ value }} </span>
+        {% else %}
+          {% for item in value %}
+            <span class="result-{{ key.replace("_","-") }}">{{ item }}</span>
+            {% if not loop.last %},{% endif %}
+          {% endfor %}
+        {% endif %}
       </p>
     {% endif %}
   {% endfor %}
