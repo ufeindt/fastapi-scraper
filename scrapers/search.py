@@ -71,7 +71,7 @@ def search_query(search_category: SearchCategory, search_type: SearchType, query
                     return scrape_imdb_id(matches[0].id)
                 case SearchType.EAN.value:
                     matches = search_amazon_se_ean(query)
-                    return scrape_amazon_se_asin(matches.asin)
+                    return scrape_amazon_se_asin(matches.asin, ean=matches.ean)
                 case _:
                     raise InvalidTypeException("Invalid search type")
         case _:
