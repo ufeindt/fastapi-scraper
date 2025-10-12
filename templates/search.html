@@ -1,20 +1,23 @@
-<div>
-  <div>
-    {% for category in search_categories %}
-      {% if category.search_category.value == search_category %}
-        <b>{{ category.title }}</b>
-      {% else %}
-        <a
-          href="/{{ api_key }}/{{ category.search_category.value }}"
-          hx-get="/{{ api_key }}/{{ category.search_category.value }}"
-          hx-target="#search"
-          hx-replace-url="true"
-        >
-          {{ category.title }}
-        </a>
-      {% endif %}
-    {% endfor %}
-  </div>
+<div class="search-option-row">
+  {% for category in search_categories %}
+    {% if category.search_category.value == search_category %}
+      <b>{{ category.title }}</b>
+    {% else %}
+      <a
+        href="/{{ api_key }}/{{ category.search_category.value }}"
+        hx-get="/{{ api_key }}/{{ category.search_category.value }}"
+        hx-target="#search"
+        hx-replace-url="true"
+      >
+        {{ category.title }}
+      </a>
+    {% endif %}
+    {% if not loop.last %}
+      &nbsp;&mdash;&nbsp;
+    {% endif %}
+  {% endfor %}
+</div>
+<div class="search-option-row">
   {% if search_types %}
     {% for type_option in search_types %}
       {% if type_option.search_type.value == search_type %}
@@ -28,6 +31,9 @@
         >
           {{ type_option.title }}
         </a>
+      {% endif %}
+      {% if not loop.last %}
+        &nbsp;&mdash;&nbsp;
       {% endif %}
     {% endfor %}
   {% endif %}
