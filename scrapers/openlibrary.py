@@ -2,6 +2,7 @@ import os
 from typing import Any
 
 import requests
+from cachetools import TTLCache, cached
 from pydantic import BaseModel
 
 from .exceptions import NotFoundException
@@ -27,6 +28,7 @@ class OpenLibraryBookSearchResult(BaseModel):
     subjects: list[str]
 
 
+@cached(cache=TTLCache(maxsize=1024, ttl=600))
 def fetch_by_key(key: str) -> dict[str, Any] | None:
     url = f"https://openlibrary.org{key}.json"
     response = requests.get(url, headers=HEADERS)
@@ -36,7 +38,8 @@ def fetch_by_key(key: str) -> dict[str, Any] | None:
         return None
 
 
-def fetch_book_data(isbn) -> OpenLibraryBookSearchResult:
+@cached(cache=TTLCache(maxsize=1024, ttl=600))
+def fetch_book_data(isbn: str) -> OpenLibraryBookSearchResult:
     url = f"https://openlibrary.org/isbn/{isbn}.json"
     response = requests.get(url, headers=HEADERS)
     if response.status_code == 200:
