@@ -3,6 +3,7 @@ from typing import TypedDict
 
 from cachetools import TTLCache, cached
 
+from .amazon_se import scrape_amazon_se_asin, search_amazon_se_ean
 from .exceptions import InvalidTypeException
 from .imdb import scrape_imdb_id, search_imdb_title
 
@@ -70,7 +71,8 @@ def search_query(search_category: SearchCategory, search_type: SearchType, query
                     matches = search_imdb_title(query)
                     return scrape_imdb_id(matches[0].id)
                 case SearchType.EAN.value:
-                    raise NotImplementedError("EAN search not implemented yet")
+                    matches = search_amazon_se_ean(query)
+                    return scrape_amazon_se_asin(matches.asin)
                 case _:
                     raise InvalidTypeException("Invalid search type")
         case _:
