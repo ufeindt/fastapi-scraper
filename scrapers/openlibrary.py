@@ -16,6 +16,7 @@ HEADERS = {
 
 
 class OpenLibraryBookSearchResult(BaseModel):
+    image_url: str
     title: str | None
     subtitle: str | None
     isbn_10: list[str] | None
@@ -24,7 +25,6 @@ class OpenLibraryBookSearchResult(BaseModel):
     publish_date: str | None
     number_of_pages: int | None
     publishers: list[str]
-    cover: str
     subjects: list[str]
 
 
@@ -60,6 +60,7 @@ def fetch_book_data(isbn: str) -> OpenLibraryBookSearchResult:
                     author_names.append(author_data.get("personal_name"))
 
     return OpenLibraryBookSearchResult(
+        image_url=f"https://covers.openlibrary.org/b/isbn/{isbn}-L.jpg",
         title=work_data.get("title") or result.get("title"),
         subtitle=work_data.get("subtitle") or result.get("subtitle"),
         isbn_10=result.get("isbn_10"),
@@ -68,6 +69,5 @@ def fetch_book_data(isbn: str) -> OpenLibraryBookSearchResult:
         publish_date=result.get("publish_date"),
         number_of_pages=result.get("number_of_pages"),
         publishers=result.get("publishers", []),
-        cover="https://covers.openlibrary.org/b/isbn/{isbn}-L.jpg",
         subjects=work_data.get("subjects", []) or result.get("subjects", []),
     )
