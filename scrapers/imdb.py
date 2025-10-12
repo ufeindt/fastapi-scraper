@@ -60,7 +60,7 @@ def search_imdb_title(title: str, lang: str = "en-US") -> list[ImdbSearchResult]
 
         return results
     except AttributeError:
-        raise NotFoundException("Item not found")
+        raise NotFoundException("Item not found") from None
 
 
 def scrape_imdb_id(imdb_id: str, lang: str = "en-US") -> ImdbScraperResult:
@@ -124,7 +124,8 @@ def scrape_imdb_id(imdb_id: str, lang: str = "en-US") -> ImdbScraperResult:
             soup.main.div.section.section.find_all("div", recursive=False)[2]
             .section.section.find_all("div", recursive=False)[2]
             .find_all("div", recursive=False)[1]
-            .div.section.p.text
+            .div.section.p.find_all("span", recursive=False)[1]
+            .text
         )
         age_rating: str = (
             soup.main.div.section.section.find_all("div", recursive=False)[2]
@@ -133,7 +134,7 @@ def scrape_imdb_id(imdb_id: str, lang: str = "en-US") -> ImdbScraperResult:
             .a.text
         )
     except AttributeError:
-        raise NotFoundException("Item not found")
+        raise NotFoundException("Item not found") from None
 
     return ImdbScraperResult(
         imdb_id=imdb_id,
