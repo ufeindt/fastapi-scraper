@@ -90,6 +90,8 @@ async def search(
             ).model_dump()
         except (InvalidTypeException, NotFoundException, NotImplementedError) as e:
             context["error"] = str(e)
+        except Exception:
+            context["error"] = "Internal Error"
     elif hx_request:
         template = "search.html"
 

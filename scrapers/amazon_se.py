@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from pydantic import BaseModel
 
-from scrapers.exceptions import NotFoundException
+from .exceptions import NotFoundException
 
 
 class AmazonSeEanSearchResult(BaseModel):
